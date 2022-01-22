@@ -82,7 +82,7 @@ const MyBetHistory = () => {
     >
       <div className="bet-history pt-4">
         <h1 className="text-4xl bet-history__title">My Betting History</h1>
-        <div class="bet-history__desc bet-history__bg">
+        <div className="bet-history__desc bet-history__bg">
           <p>
             The below bets are either completed or active bets related to your
             Discord User.
@@ -92,11 +92,11 @@ const MyBetHistory = () => {
         <div className="bet-history__filter">
           <label htmlFor="betHistorySort">Sort by:</label>
           <Form.Select onChange={() => sortTable()} size="sm" ref={sortVal}>
-            <option value="completedBets">Completed bets</option>
             <option value="activeBets">Active bets</option>
+            <option value="completedBets">Completed bets</option>
           </Form.Select>
         </div>
-        <div className="bet-history__table-wrapper">
+        <div className="bet-history__table-wrapper d-flex justify-content-center">
           <BetHistoryTable data={sortedTable} />
         </div>
       </div>

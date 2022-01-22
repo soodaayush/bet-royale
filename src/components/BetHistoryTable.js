@@ -1,17 +1,18 @@
 import moment from "moment";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import '../styles/bet-history-table.scss';
+import "../styles/bet-history-table.scss";
 import Masonry from "react-masonry-css";
-import { Link } from 'react-router-dom';
-import { BoxArrowUpRight } from 'react-bootstrap-icons';
+import { Link } from "react-router-dom";
+import { BoxArrowUpRight } from "react-bootstrap-icons";
+
 const BetHistoryTable = (props) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     setIsLoaded(true);
   }, []);
-  
+
   const variants = {
     loaded: {
       opacity: 1,
@@ -31,10 +32,10 @@ const BetHistoryTable = (props) => {
 
   return (
     <Masonry
-    breakpointCols={breakpointColumnsObj}
-    id="betting-table"
-    className="betting-table"
-  >
+      breakpointCols={breakpointColumnsObj}
+      id="betting-table"
+      className="betting-table"
+    >
       {props.data.map((currentBet, index) => (
         <motion.div
           className="betting-table__bet"
@@ -46,24 +47,24 @@ const BetHistoryTable = (props) => {
           <div className="betting-table__bet__header">
             <h3 className="betting-table__bet__name">{currentBet.name}</h3>
             <Link
-                className="betting-table__bet__header__link"
-                to={{
-                  pathname: "/bet/" + currentBet.id,
-                  state: { currentBet: currentBet },
-                }}
-              >
-                <BoxArrowUpRight />
-              </Link>
+              className="betting-table__bet__header__link"
+              to={{
+                pathname: "/bet/" + currentBet.id,
+                state: { currentBet: currentBet },
+              }}
+            >
+              <BoxArrowUpRight />
+            </Link>
           </div>
           <div className="betting-table__bet__body mt-3">
             <div className="betting-table__bet__body__data">
               <h4>About the Bet</h4>
               <ul>
-                {currentBet.selectedOption &&
-                <li>
-                  <span>Choice:</span> {currentBet.selectedOption}
-                </li>
-                }
+                {currentBet.selectedOption && (
+                  <li>
+                    <span>Choice:</span> {currentBet.selectedOption}
+                  </li>
+                )}
                 <li>
                   <span>Deadline:</span>{" "}
                   {moment
@@ -83,11 +84,11 @@ const BetHistoryTable = (props) => {
                   {currentBet.size} ROY
                 </li>
                 {currentBet.selectedChoice && (
-                    <li className="betting-table__bet__body__data__result">
-                      <span>Result:</span>
-                      {currentBet.selectedChoice}
-                    </li>
-                  )}
+                  <li className="betting-table__bet__body__data__result">
+                    <span>Result:</span>
+                    {currentBet.selectedChoice}
+                  </li>
+                )}
               </ul>
             </div>
           </div>

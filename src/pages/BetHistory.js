@@ -79,7 +79,7 @@ const MyBetHistory = () => {
     >
       <div className="bet-history pt-4">
         <h1 className="text-4xl bet-history__title">General Betting History</h1>
-        <div class="bet-history__desc bet-history__bg">
+        <div className="bet-history__desc bet-history__bg">
           <p>
             The below bets are either completed or active bets related from
             every Bet Royale User.
@@ -93,7 +93,7 @@ const MyBetHistory = () => {
             <option value="completedBets">Completed bets</option>
           </Form.Select>
         </div>
-        <div className="bet-history__table-wrapper">
+        <div className="bet-history__table-wrapper d-flex justify-content-center">
           <BetHistoryTable data={sortedTable} />
         </div>
       </div>
