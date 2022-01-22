@@ -7,15 +7,14 @@ import MyBetHistory from "./pages/MyBetHistory";
 import BetHistory from "./pages/BetHistory";
 import Guide from "./pages/Guide";
 import Footer from "./components/Footer";
-import Bet from "./pages/Bet"
-import { AnimatePresence } from 'framer-motion';
+import Bet from "./pages/Bet";
+import { AnimatePresence } from "framer-motion";
 import "./styles/header.scss";
 import "./index.scss";
 import "./styles/main.scss";
 import "./styles/bettingtable.scss";
 import "./styles/modal.scss";
 import "./styles/footer.scss";
-
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -28,27 +27,27 @@ const App = () => {
     >
       <Header />
       <AnimatePresence exitBeforeEnter>
-      <Router location={location} key={location.pathname}>
-        <Route path="/" exact>
-          <Home />
-        </Route>
-        <Route path="/createBet" exact>
-          <CreateBet />
-        </Route>
-        <Route path="/my-bets-history" exact>
-          <MyBetHistory />
-        </Route>
-        <Route path="/bets-history" exact>
-          <BetHistory />
-        </Route>
-        <Route path="/guide" exact>
-          <Guide />
-        </Route>
-        <Route path="/bet/:id">
-          <Bet/>
+        <Router location={location} key={location.pathname}>
+          <Route path="/" exact>
+            <Home />
           </Route>
-      </Router>
-      <Footer />
+          <Route path="/createBet" exact>
+            <CreateBet />
+          </Route>
+          <Route path="/my-bets-history" exact>
+            <MyBetHistory />
+          </Route>
+          <Route path="/bets-history" exact>
+            <BetHistory />
+          </Route>
+          <Route path="/guide" exact>
+            <Guide />
+          </Route>
+          <Route path="/bet/:id">
+            <Bet />
+          </Route>
+        </Router>
+        <Footer />
       </AnimatePresence>
     </div>
   );

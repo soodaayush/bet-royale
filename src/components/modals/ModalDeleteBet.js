@@ -6,6 +6,7 @@ const ModalDeleteBet = (props) => {
     BetService.getInstance().deleteBet(props.betId);
     props.betDeleteStateChanger(false);
   }
+
   return (
     <Modal show={props.betDeleteState}>
       <div className="modal-header">

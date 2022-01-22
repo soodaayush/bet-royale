@@ -6,7 +6,6 @@ const ModalBetOption = (props) => {
   let betOptionSelectRef = useRef("");
 
   function betOnOption(bet) {
-    // console.log(betOptionSelectRef.current.value);
     if (betOptionSelectRef.current.value !== "") {
       bet.selectedOption = betOptionSelectRef.current.value;
       props.placeBetFunc(bet);
@@ -14,6 +13,7 @@ const ModalBetOption = (props) => {
       return;
     }
   }
+
   return (
     <Modal show={props.betOptState}>
       <div className="modal-header">

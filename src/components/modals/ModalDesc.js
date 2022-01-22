@@ -2,7 +2,6 @@ import Modal from "react-bootstrap/Modal";
 import ReactHtmlParser from "react-html-parser";
 
 const ModalDesc = (props) => {
-  //   console.log(props);
   return (
     <div className="modal-wrapper">
       <Modal show={props.descState}>

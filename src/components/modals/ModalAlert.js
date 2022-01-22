@@ -1,7 +1,6 @@
 import Modal from "react-bootstrap/Modal";
 
 const ModalAlert = (props) => {
-  // console.log(props);
   return (
     <Modal show={props.alertState}>
       <div className="modal-header">

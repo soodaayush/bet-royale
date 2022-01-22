@@ -1,16 +1,16 @@
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useHistory } from "react-router-dom";
 import { useState, useEffect } from "react";
 import BetService from "../api/Bet";
-import '../styles/bet-details.scss';
+import "../styles/bet-details.scss";
 import ReactHtmlParser from "react-html-parser";
 import moment from "moment";
-import { motion } from 'framer-motion';
-import Loading from '../components/Loading';
-import { ArrowLeftCircleFill } from 'react-bootstrap-icons';
+import { motion } from "framer-motion";
+import Loading from "../components/Loading";
+import { ArrowLeftCircleFill } from "react-bootstrap-icons";
 
-import ModalAlert from '../components/modals/ModalAlert';
-import ModalBetOption from '../components/modals/ModalBetOption';
-import ModalBetResult from '../components/modals/ModalBetResult';
+import ModalAlert from "../components/modals/ModalAlert";
+import ModalBetOption from "../components/modals/ModalBetOption";
+import ModalBetResult from "../components/modals/ModalBetResult";
 
 import Web3 from "web3";
 
@@ -36,8 +36,6 @@ function Bet(props) {
   const [creatorUrl, setCreatorUrl] = useState();
   const web3 = new Web3(Web3.givenProvider);
 
-
-
   const { id } = useParams();
 
   let history = useHistory();
@@ -59,13 +57,14 @@ function Bet(props) {
         }
         const betIndex = currentBetLogs.findIndex((bet) => bet.id === id);
         setCurrentBet(currentBetLogs[betIndex]);
-        setCreatorUrl(currentBetLogs[betIndex].betCreator.replace(/[0-9]/g, "").replace('#', ""));
-
+        setCreatorUrl(
+          currentBetLogs[betIndex].betCreator
+            .replace(/[0-9]/g, "")
+            .replace("#", "")
+        );
       });
-      setIsLoading(false);
-      
-    }, [id]);
-
+    setIsLoading(false);
+  }, [id]);
 
   function openBetOptionModal(bet) {
     if (!window.ethereum) {
@@ -213,75 +212,100 @@ function Bet(props) {
     BetService.getInstance().logBet(data);
   }
 
-  
-
-
   if (isLoading) {
     return <Loading />;
   }
   return (
     <motion.div
-    initial={{ opacity: 0, filter: "blur(2px)" }}
-    transition={{ ease: "easeInOut", duration: .5, delay: 1 }}
-    animate={{ opacity: 1, filter: "blur(0)" }}
-    exit={{ opacity: 0, filter: "blur(2px)" }}
-    key="betDetails"
+      initial={{ opacity: 0, filter: "blur(2px)" }}
+      transition={{ ease: "easeInOut", duration: 0.5, delay: 1 }}
+      animate={{ opacity: 1, filter: "blur(0)" }}
+      exit={{ opacity: 0, filter: "blur(2px)" }}
+      key="betDetails"
     >
-      <ModalAlert alertDesc={description} alertState={alertModal} alertStateChanger={setAlertModal} />
-      <ModalBetOption placeBetFunc={placeBet} betOptions={betOptions} betOptState={betOptionModal} betOptStateChanger={setBetOptionModal} betData={betData} />
-      <ModalBetResult betData={betData} betOptions={betOptions} betResultState={betResultModal} betResultStateChanger={setBetResultModal} />
-      <div
-        className="mt-5 bet-details"
-
-      >
+      <ModalAlert
+        alertDesc={description}
+        alertState={alertModal}
+        alertStateChanger={setAlertModal}
+      />
+      <ModalBetOption
+        placeBetFunc={placeBet}
+        betOptions={betOptions}
+        betOptState={betOptionModal}
+        betOptStateChanger={setBetOptionModal}
+        betData={betData}
+      />
+      <ModalBetResult
+        betData={betData}
+        betOptions={betOptions}
+        betResultState={betResultModal}
+        betResultStateChanger={setBetResultModal}
+      />
+      <div className="mt-5 bet-details">
         <div className="bet-details__heading">
-
-          <h1 className='text-cente bet-details__heading__name'>{currentBet.name}</h1>
+          <h1 className="text-cente bet-details__heading__name">
+            {currentBet.name}
+          </h1>
           {/* <hr className="bet-details__heading__divider"/> */}
           <div className="bet-details__sub">
-
             <div className="bet-details__sub__avatar">
               <div className="bet-details__sub__avatar__img">
-              <img src={`https://avatars.dicebear.com/api/initials/${creatorUrl}.svg`} alt=""/>                
+                <img
+                  src={`https://avatars.dicebear.com/api/initials/${creatorUrl}.svg`}
+                  alt=""
+                />
               </div>
-              <span className="bet-details__sub__avatar__name">{currentBet.betCreator}</span>
+              <span className="bet-details__sub__avatar__name">
+                {currentBet.betCreator}
+              </span>
             </div>
-            <p className="bet-details__sub__text bet-details__bg">{currentBet.shortDescription}</p>
+            <p className="bet-details__sub__text bet-details__bg">
+              {currentBet.shortDescription}
+            </p>
           </div>
         </div>
         <div className="bet-details__main ">
-
           <div className="bet-details__main__data__wrapper">
             <h3>Bet Details</h3>
             <div className="bet-details__main__data bet-details__bg">
               <ul>
-                <li>Deadline:
+                <li>
+                  Deadline:
                   <span>
                     {moment
                       .utc(currentBet.deadline)
                       .local()
-                      .format("YYYY/MM/DD h:mm A")
-                    }
+                      .format("YYYY/MM/DD h:mm A")}
                   </span>
                 </li>
-                <li>Results:
+                <li>
+                  Results:
                   <span>
                     {moment
                       .utc(currentBet.results)
                       .local()
-                      .format("YYYY/MM/DD h:mm A")
-                    }
+                      .format("YYYY/MM/DD h:mm A")}
                   </span>
                 </li>
-                <li>Bet Size: <span>{currentBet.size}</span></li>
-                <li>Players / Pot: <span>{currentBet.currentBets} Bets / {currentBet.currentBets * currentBet.size} ROY</span></li>
-                <li>Maximum Betters: <span>{currentBet.maxBetters}</span></li>
+                <li>
+                  Bet Size: <span>{currentBet.size}</span>
+                </li>
+                <li>
+                  Players / Pot:{" "}
+                  <span>
+                    {currentBet.currentBets} Bets /{" "}
+                    {currentBet.currentBets * currentBet.size} ROY
+                  </span>
+                </li>
+                <li>
+                  Maximum Betters: <span>{currentBet.maxBetters}</span>
+                </li>
                 {currentBet.selectedChoice && (
-                    <li className="betting-table__bet__body__data__result">
-                      <span>Result:</span>
-                      {currentBet.selectedChoice}
-                    </li>
-                  )}
+                  <li className="betting-table__bet__body__data__result">
+                    <span>Result:</span>
+                    {currentBet.selectedChoice}
+                  </li>
+                )}
               </ul>
             </div>
           </div>
@@ -298,7 +322,7 @@ function Bet(props) {
               moment(currentBet.results).format("x") > +new Date() &&
               moment(currentBet.deadline).format("x") > +new Date() &&
               parseInt(currentBet.currentBets) !==
-              parseInt(currentBet.maxBetters) &&
+                parseInt(currentBet.maxBetters) &&
               !currentBet.selectedChoice && (
                 <button
                   className="outline-none btn"
@@ -309,8 +333,7 @@ function Bet(props) {
               )}
             {moment(currentBet.results).format("x") < +new Date() &&
               !currentBet.selectedChoice &&
-              localStorage.getItem("username") !==
-              currentBet.betCreator && (
+              localStorage.getItem("username") !== currentBet.betCreator && (
                 <button className="outline-none btn no-cursor">
                   Results coming soon
                 </button>
@@ -337,10 +360,7 @@ function Bet(props) {
               </button>
             )}
             {betState.includes(currentBet.id) && (
-              <button
-                disabled
-                className="outline-none btn placed no-cursor"
-              >
+              <button disabled className="outline-none btn placed no-cursor">
                 Bet Placed
               </button>
             )}
@@ -351,13 +371,17 @@ function Bet(props) {
                   Bet Placements Full
                 </button>
               )}
-          <button className="bet-details__goback" onClick={() => history.goBack()}><ArrowLeftCircleFill />Back to Bet Table</button>
+            <button
+              className="bet-details__goback"
+              onClick={() => history.goBack()}
+            >
+              <ArrowLeftCircleFill />
+              Back to Bet Table
+            </button>
           </div>
         </div>
-
       </div>
     </motion.div>
-  )
+  );
 }
-export default Bet; 
-
+export default Bet;
