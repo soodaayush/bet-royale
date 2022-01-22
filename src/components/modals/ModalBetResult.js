@@ -10,7 +10,7 @@ const ModalBetResult = (props) => {
   function putBetResult(data) {
     data.selectedChoice = betResultSelectRef.current.value;
     data.betResult = betResultSelectRef.current.value;
-    BetService.getInstance().deleteBet(data.id);
+    BetService.getInstance().editBet(data, data.id);
     props.betResultStateChanger(false);
   }
 
