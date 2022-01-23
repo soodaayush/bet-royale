@@ -11,7 +11,7 @@ export class BetService extends Component {
   async getCurrentBets() {
     try {
       let response = await fetch(
-        "https://bet-royale-testing-default-rtdb.firebaseio.com/currentBets.json"
+        "https://bet-royale-bd57d-default-rtdb.firebaseio.com/currentBets.json"
       );
 
       let responseJson = await response.json();
@@ -24,7 +24,7 @@ export class BetService extends Component {
 
   async createBet(data) {
     let url =
-      "https://bet-royale-testing-default-rtdb.firebaseio.com/currentBets.json";
+      "https://bet-royale-bd57d-default-rtdb.firebaseio.com/currentBets.json";
 
     return await fetch(url, {
       method: "POST",
@@ -36,7 +36,7 @@ export class BetService extends Component {
   }
 
   async deleteBet(id) {
-    let url = `https://bet-royale-testing-default-rtdb.firebaseio.com/currentBets/${id}.json`;
+    let url = `https://bet-royale-bd57d-default-rtdb.firebaseio.com/currentBets/${id}.json`;
 
     return await fetch(url, {
       method: "DELETE",
@@ -44,7 +44,7 @@ export class BetService extends Component {
   }
 
   async editBet(data, id) {
-    let url = `https://bet-royale-testing-default-rtdb.firebaseio.com/currentBets/${id}.json`;
+    let url = `https://bet-royale-bd57d-default-rtdb.firebaseio.com/currentBets/${id}.json`;
 
     return await fetch(url, {
       method: "PUT",
@@ -57,7 +57,7 @@ export class BetService extends Component {
 
     try {
       let response = await fetch(
-        `https://bet-royale-testing-default-rtdb.firebaseio.com/user/${username}/betHistory.json`
+        `https://bet-royale-bd57d-default-rtdb.firebaseio.com/user/${username}/betHistory.json`
       );
 
       let responseJson = await response.json();
@@ -71,7 +71,7 @@ export class BetService extends Component {
   async logBet(data) {
     let username = GetHash(localStorage.getItem("username"));
 
-    let url = `https://bet-royale-testing-default-rtdb.firebaseio.com/user/${username}/betHistory.json`;
+    let url = `https://bet-royale-bd57d-default-rtdb.firebaseio.com/user/${username}/betHistory.json`;
 
     return await fetch(url, {
       method: "POST",
