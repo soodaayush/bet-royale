@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Modal, FloatingLabel, Form, FormGroup } from "react-bootstrap";
 import { motion } from "framer-motion";
+import "leo-profanity";
 import BetService from "../api/Bet";
 
 import ReactQuill from "react-quill";
@@ -11,6 +12,8 @@ import moment from "moment";
 import "../styles/createbet.scss";
 
 const CreateBet = () => {
+  let profanityFilter = require("leo-profanity");
+
   const [modal, setModal] = useState(false);
   const [description, setDescription] = useState("");
   const [convertedText, setConvertedText] = useState("");
@@ -61,6 +64,19 @@ const CreateBet = () => {
       setModal(true);
       setDescription("One or more of the fields have not been filled!");
       return;
+    }
+
+    for (let i = 0; i < profanityFilter.list().length; i++) {
+      if (
+        currentTitle.toLowerCase() === profanityFilter.list()[i] ||
+        currentDescription.toLowerCase() === profanityFilter.list()[i] ||
+        currentShortDescription.toLowerCase() === profanityFilter.list()[i] ||
+        currentChoices.toLowerCase() === profanityFilter.list()[i]
+      ) {
+        setModal(true);
+        setDescription("One or more of the fields contain profanity!");
+        return;
+      }
     }
 
     if (formattedDeadline < today) {
