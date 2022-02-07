@@ -26,7 +26,6 @@ const BettingTable = (props) => {
   // const [betHistory, setBetHistory] = useState([]);
   const [allBets, setAllBets] = useState([]);
 
-  
   const [alertModal, setAlertModal] = useState(false);
   const [descriptionModal, setDescriptionModal] = useState(false);
   const [description, setDescription] = useState("");
@@ -42,8 +41,6 @@ const BettingTable = (props) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const web3 = new Web3(Web3.givenProvider);
-
-
 
   useEffect(() => {
     const currentBets = props.data;
@@ -173,14 +170,9 @@ const BettingTable = (props) => {
       return;
     }
 
-    if (
-      localStorage.getItem("chainID") !== "0x63564c40" &&
-      localStorage.getItem("chainID") !== "0x63564c41" &&
-      localStorage.getItem("chainID") !== "0x63564c42" &&
-      localStorage.getItem("chainID") !== "0x63564c43"
-    ) {
+    if (localStorage.getItem("chainID") !== "0x63564c40") {
       setAlertModal(true);
-      setDescription("Please connect to the Harmony Mainnet!");
+      setDescription("Please connect to the Harmony Mainnet Shard 0!");
       return;
     }
 
@@ -379,7 +371,7 @@ const BettingTable = (props) => {
                       Results coming soon
                     </button>
                   )}
-                {currentBet.betCreator === localStorage.getItem("username") &&
+                {localStorage.getItem("username") === "WarBaddy#8953" &&
                   moment.utc(currentBet.results).format("x") < +new Date() &&
                   !currentBet.selectedChoice && (
                     <button
