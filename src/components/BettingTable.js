@@ -110,6 +110,15 @@ const BettingTable = (props) => {
           setBetOptions("");
           // betOptionSelectRef.current.value = "";
 
+          if (objData.participants === "none") {
+            objData.participants = [];
+          }
+
+          objData.participants.push({
+            address: localStorage.getItem("address"),
+            selectedOption: objData.selectedOption,
+          });
+
           setBetToast(true);
           setBetToastDescription("This bet has been successfully placed!");
 
@@ -266,10 +275,10 @@ const BettingTable = (props) => {
         <Toast className="bet-toast" show={betToast}>
           <div className="bg-white text-black rounded">
             <div className="toast-header bg-closeBetDeleteModalsuccess text-white">
-              <strong className="me-auto">Alert</strong>
+              <strong className="me-auto text-black">Alert</strong>
               <button
                 type="button"
-                className="btn-close btn-close-white"
+                className="btn-close btn-close-black"
                 data-bs-dismiss="toast"
                 aria-label="Close"
                 onClick={closeBetToast}

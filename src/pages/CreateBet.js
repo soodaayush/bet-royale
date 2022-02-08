@@ -119,6 +119,7 @@ const CreateBet = () => {
       size: currentBetValue,
       currentBets: 0,
       maxBetters: currentMaxBetters,
+      participants: "none",
       betCreator: localStorage.getItem("username"),
     };
 
