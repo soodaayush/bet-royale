@@ -81,6 +81,32 @@ export class BetService extends Component {
       },
     });
   }
+
+  async logBetInBetsHistory(data) {
+    let url = `https://bet-royale-bd57d-default-rtdb.firebaseio.com/betsHistory.json`;
+
+    return await fetch(url, {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
+  async getBetsHistory() {
+    try {
+      let response = await fetch(
+        "https://bet-royale-bd57d-default-rtdb.firebaseio.com/betsHistory.json"
+      );
+
+      let responseJson = await response.json();
+
+      return responseJson;
+    } catch (error) {
+      console.error(error);
+    }
+  }
 }
 
 export default BetService;

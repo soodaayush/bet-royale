@@ -291,7 +291,7 @@ const BettingTable = (props) => {
       <Masonry
         breakpointCols={breakpointColumnsObj}
         id="betting-table"
-        className="betting-table"
+        className="betting-table w-100"
       >
         {allBets.map((currentBet, index) => (
           <motion.div

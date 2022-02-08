@@ -69,7 +69,9 @@ const Home = () => {
     >
       <div className="container-fluid px-0 mx-0 d-flex align-items-center flex-column pt-4">
         <h1 className="text-4xl mb-4">RoyBet Centre</h1>
-        <BettingTable data={currentBets} betHistoryData={betHistory} />
+        <div className="w-100 container">
+          <BettingTable data={currentBets} betHistoryData={betHistory} />
+        </div>
       </div>
     </motion.div>
   );

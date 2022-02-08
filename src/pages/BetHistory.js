@@ -1,70 +1,37 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 
 import Loading from "../components/Loading";
 import BetHistoryTable from "../components/BetHistoryTable";
 import { motion } from "framer-motion";
 import BetService from "../api/Bet";
 import "../styles/bet-history.scss";
-import { Form } from "react-bootstrap";
-import moment from "moment";
 
 const MyBetHistory = () => {
-  const [activeBets, setActiveBets] = useState([]);
-  const [completedBets, setCompletedBets] = useState([]);
+  const [betsHistoryLogs, setBetsHistoryLogs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [sortedTable, setSortedTable] = useState([]);
-
-  let sortVal = useRef("completedBets");
 
   useEffect(() => {
-    let currentTime = moment.utc().local().format("YYYY/MM/DD h:mm A");
     setIsLoading(true);
 
     BetService.getInstance()
-      .getCurrentBets()
+      .getBetsHistory()
       .then((data) => {
-        const currentBetLogs = [];
+        const betsHistoryLogs = [];
 
         for (const key in data) {
-          const currentBetLog = {
+          const betHistoryLog = {
             id: key,
             ...data[key],
           };
-          currentBetLogs.push(currentBetLog);
+
+          betsHistoryLogs.push(betHistoryLog);
         }
-        setActiveBets(
-          currentBetLogs.filter(
-            (bet) =>
-              moment.utc(bet.results).local().format("YYYY/MM/DD h:mm A") >
-              currentTime
-          )
-        );
-        setCompletedBets(
-          currentBetLogs.filter(
-            (bet) =>
-              moment.utc(bet.results).local().format("YYYY/MM/DD h:mm A") <
-              currentTime
-          )
-        );
-        setSortedTable(
-          currentBetLogs.filter(
-            (bet) =>
-              moment.utc(bet.results).local().format("YYYY/MM/DD h:mm A") >
-              currentTime
-          )
-        );
+
+        setBetsHistoryLogs(betsHistoryLogs);
       });
 
     setIsLoading(false);
   }, []);
-
-  function sortTable() {
-    if (sortVal.current.value === "completedBets") {
-      setSortedTable(completedBets);
-    } else if (sortVal.current.value === "activeBets") {
-      setSortedTable(activeBets);
-    }
-  }
 
   if (isLoading) {
     return <Loading />;
@@ -84,17 +51,9 @@ const MyBetHistory = () => {
             The below bets are either completed or active bets related from
             every Bet Royale User.
           </p>
-          {/* <QuestionCircle size={90}/> */}
         </div>
-        <div className="bet-history__filter">
-          <label htmlFor="betHistorySort">Sort by:</label>
-          <Form.Select onChange={() => sortTable()} size="sm" ref={sortVal}>
-            <option value="activeBets">Active bets</option>
-            <option value="completedBets">Completed bets</option>
-          </Form.Select>
-        </div>
-        <div className="bet-history__table-wrapper d-flex justify-content-center">
-          <BetHistoryTable data={sortedTable} />
+        <div className="bet-history__table-wrapper d-flex justify-content-center w-100">
+          <BetHistoryTable data={betsHistoryLogs} />
         </div>
       </div>
     </motion.div>
