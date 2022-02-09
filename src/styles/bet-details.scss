@@ -234,7 +234,6 @@
       flex-direction: column;
 
       @media (min-width: $screen-lg) {
-        // grid-column: 1 / span 2;
         width: 350px;
         grid-area: placebet;
 
@@ -282,7 +281,6 @@
         }
 
         &.placed {
-          // background: var(--c-secondary-darken-1);
           animation: animatePlacedBtn 10s linear infinite;
           background-image: linear-gradient(
             90deg,

@@ -4,19 +4,6 @@
   display: flex;
   width: auto;
   max-width: var(--bet-table--maxwidth);
-  // display: grid;
-  // place-items: center;
-  // margin-bottom: 1.5em;
-  // row-gap: 25px;
-
-  // @media (min-width: $screen-md) {
-  //   grid-template-columns: repeat(2, 1fr);
-  //   gap: 25px;
-  // }
-
-  // @media (min-width: $screen-lg) {
-  //   grid-template-columns: repeat(3, 1fr);
-  // }
 
   &__wrapper {
     display: flex;
@@ -28,8 +15,6 @@
     padding: 1em;
     border-radius: 5px;
     box-shadow: var(--box-shadow-primary);
-    // width: 100%;
-    // height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -75,7 +60,6 @@
       }
     }
     &__name {
-      // border-bottom: 1px solid var(--c-primary-lighten-3);
       padding-bottom: 0.6em;
       margin-bottom: 0.3em;
       font-size: 1.3em;
@@ -244,7 +228,6 @@
           }
 
           &.placed {
-            // background: var(--c-secondary-darken-1);
             animation: animatePlacedBtn 10s linear infinite;
             background-image: linear-gradient(
               90deg,

@@ -1,4 +1,4 @@
-import { useParams, useHistory } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import BetService from "../api/Bet";
 import "../styles/bet-details.scss";
@@ -7,6 +7,7 @@ import moment from "moment";
 import { motion } from "framer-motion";
 import Loading from "../components/Loading";
 import { ArrowLeftCircleFill } from "react-bootstrap-icons";
+import { Link } from "react-router-dom";
 
 import ModalAlert from "../components/modals/ModalAlert";
 import ModalBetOption from "../components/modals/ModalBetOption";
@@ -14,31 +15,21 @@ import ModalBetResult from "../components/modals/ModalBetResult";
 
 import Web3 from "web3";
 
-// import Toast from "react-bootstrap/Toast";
-// import ToastContainer from "react-bootstrap/ToastContainer";
-
 function Bet(props) {
   const [currentBet, setCurrentBet] = useState([]);
-  // const [betHistory, setBetHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [betState, setBetState] = useState([]);
   const [betData, setBetData] = useState();
   const [betOptions, setBetOptions] = useState("");
 
-  // const [betToast, setBetToast] = useState(false);
-  // const [betToastDescription, setBetToastDescription] = useState("");
-
   const [alertModal, setAlertModal] = useState(false);
   const [description, setDescription] = useState("");
   const [betOptionModal, setBetOptionModal] = useState(false);
-  // const [betDeleteModal, setBetDeleteModal] = useState(false);
   const [betResultModal, setBetResultModal] = useState(false);
   const [creatorUrl, setCreatorUrl] = useState();
   const web3 = new Web3(Web3.givenProvider);
 
   const { id } = useParams();
-
-  let history = useHistory();
 
   useEffect(() => {
     setIsLoading(true);
@@ -176,10 +167,6 @@ function Bet(props) {
         .on("transactionHash", function (hash) {
           setBetOptionModal(false);
           setBetOptions("");
-          // betOptionSelectRef.current.value = "";
-
-          // setBetToast(true);
-          // setBetToastDescription("This bet has been successfully placed!");
 
           setBetState([...betState, objData.id]);
 
@@ -192,10 +179,6 @@ function Bet(props) {
 
       setBetOptionModal(false);
       setBetOptions("");
-      // betOptionSelectRef.current.value = "";
-
-      // setBetToast(true);
-      // setBetToastDescription("Bet successfully rejected");
     }
   }
 
@@ -246,7 +229,6 @@ function Bet(props) {
           <h1 className="text-cente bet-details__heading__name">
             {currentBet.name}
           </h1>
-          {/* <hr className="bet-details__heading__divider"/> */}
           <div className="bet-details__sub">
             <div className="bet-details__sub__avatar">
               <div className="bet-details__sub__avatar__img">
@@ -371,12 +353,11 @@ function Bet(props) {
                   Bet Placements Full
                 </button>
               )}
-            <button
-              className="bet-details__goback"
-              onClick={() => history.goBack()}
-            >
-              <ArrowLeftCircleFill />
-              Back to Bet Table
+            <button className="bet-details__goback">
+              <Link className="bet-details__goback" to="/">
+                <ArrowLeftCircleFill />
+                Back to Bet Table
+              </Link>
             </button>
           </div>
         </div>

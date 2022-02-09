@@ -18,12 +18,9 @@ import ModalBetOption from "../components/modals/ModalBetOption";
 import ModalBetResult from "../components/modals/ModalBetResult";
 import ModalDeleteBet from "../components/modals/ModalDeleteBet";
 
-// import Discord from 'discord.js';
-
 const BettingTable = (props) => {
   const [betState, setBetState] = useState([]);
   const [betData, setBetData] = useState();
-  // const [betHistory, setBetHistory] = useState([]);
   const [allBets, setAllBets] = useState([]);
 
   const [alertModal, setAlertModal] = useState(false);
@@ -36,7 +33,6 @@ const BettingTable = (props) => {
   const [betToast, setBetToast] = useState(false);
   const [betToastDescription, setBetToastDescription] = useState("");
   const [betOptions, setBetOptions] = useState("");
-  // const [filteredBets, setFilteredBets] = useState([]);
   const [betID, setBetID] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -44,15 +40,6 @@ const BettingTable = (props) => {
 
   useEffect(() => {
     const currentBets = props.data;
-    // const betHistory = props.betHistoryData;
-
-    // const historyIds = betHistory.map((a) => a.id);
-
-    // const remainingIds = currentBets.filter(
-    //   (cb) => !historyIds.includes(cb.id)
-    // );
-    // setBetHistory(betHistory);
-    // setFilteredBets(remainingIds);
     setAllBets(currentBets);
   }, [props.data, props.betHistoryData]);
 
@@ -108,7 +95,6 @@ const BettingTable = (props) => {
         .on("transactionHash", function (hash) {
           setBetOptionModal(false);
           setBetOptions("");
-          // betOptionSelectRef.current.value = "";
 
           if (objData.participants === "none") {
             objData.participants = [];
@@ -133,7 +119,6 @@ const BettingTable = (props) => {
 
       setBetOptionModal(false);
       setBetOptions("");
-      // betOptionSelectRef.current.value = "";
 
       setBetToast(true);
       setBetToastDescription("Bet successfully rejected");
