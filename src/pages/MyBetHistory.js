@@ -75,6 +75,7 @@ const MyBetHistory = () => {
 
   return (
     <motion.div
+      className="container"
       initial={{ opacity: 0, filter: "blur(2px)" }}
       transition={{ ease: "easeInOut" }}
       animate={{ opacity: 1, filter: "blur(0)" }}

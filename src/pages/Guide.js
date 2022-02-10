@@ -3,12 +3,13 @@ import { motion } from "framer-motion";
 const Guide = () => {
   return (
     <motion.div
+      className="container"
       initial={{ opacity: 0, filter: "blur(2px)" }}
       transition={{ ease: "easeInOut" }}
       animate={{ opacity: 1, filter: "blur(0)" }}
       exit={{ opacity: 0, filter: "blur(2px)" }}
     >
-      <div className="container d-flex flex-column align-items-center text-left pt-4 pb-4">
+      <div className="d-flex flex-column align-items-center text-left pt-4 pb-4">
         <div>
           <h1>A Guide To Using Bet Royale</h1>
           <p className="pt-3">
