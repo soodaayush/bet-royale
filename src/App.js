@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, useLocation } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 
 import Header from "./components/Header";
 import Home from "./pages/Home";
@@ -8,18 +8,21 @@ import BetHistory from "./pages/BetHistory";
 import Guide from "./pages/Guide";
 import Footer from "./components/Footer";
 import Bet from "./pages/Bet";
+import PageNotFound from "./pages/PageNotFound";
+
 import { AnimatePresence } from "framer-motion";
+
 import "./styles/header.scss";
 import "./index.scss";
 import "./styles/main.scss";
 import "./styles/bettingtable.scss";
 import "./styles/modal.scss";
 import "./styles/footer.scss";
+import "./styles/page-not-found.scss";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const App = () => {
-  const location = useLocation();
   return (
     <div
       id="main-container"
@@ -27,7 +30,7 @@ const App = () => {
     >
       <Header />
       <AnimatePresence exitBeforeEnter>
-        <Router location={location} key={location.pathname}>
+        <Switch>
           <Route path="/" exact>
             <Home />
           </Route>
@@ -43,10 +46,11 @@ const App = () => {
           <Route path="/guide" exact>
             <Guide />
           </Route>
-          <Route path="/bet/:id">
+          <Route path="/bet/:id" exact>
             <Bet />
           </Route>
-        </Router>
+          <Route component={PageNotFound} />
+        </Switch>
         <Footer />
       </AnimatePresence>
     </div>

@@ -83,6 +83,10 @@ const BetHistoryTable = (props) => {
                   <span>Bet Size: </span>
                   {currentBet.size} ROY
                 </li>
+                <li>
+                  <span>Bet Creator: </span>
+                  {currentBet.betCreator}
+                </li>
                 {currentBet.selectedChoice && (
                   <li className="betting-table__bet__body__data__result">
                     <span>Result:</span>
