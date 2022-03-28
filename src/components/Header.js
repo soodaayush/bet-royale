@@ -2,13 +2,9 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Modal, Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
 
-import {
-  HouseFill,
-  NodePlusFill,
-  Book,
-} from "react-bootstrap-icons";
+import { HouseFill, NodePlusFill, Book } from "react-bootstrap-icons";
 
-import logo from "../images/logo.webp";
+import logo from "../images/logo.svg";
 import discord from "../images/discord.svg";
 
 const Header = () => {
@@ -117,8 +113,11 @@ const Header = () => {
       >
         <Container>
           <Navbar.Brand href="/" className="header-logo--wrapper">
-            <img className="header-logo img-fluid" src={logo} alt="logo" />
-            <span className="header-logo--text">BetRoyale</span>
+            <img
+              className="header-logo img-fluid w-100  "
+              src={logo}
+              alt="logo"
+            />
           </Navbar.Brand>
           <Navbar.Toggle
             onClick={() => {
@@ -174,8 +173,7 @@ const Header = () => {
                 title="Betting History"
                 className="text-decoration-none main-nav__item main-nav__dropdown"
               >
-                                
-                  <Link
+                <Link
                   onClick={() => {
                     setExpanded(false);
                     animHamMenu();
@@ -185,10 +183,11 @@ const Header = () => {
                       ? "active text-decoration-none main-nav__item"
                       : "text-white text-decoration-none main-nav__item"
                   }
-                  to="/bets-history">
-                    All Bets
-                  </Link>
-                  <Link
+                  to="/bets-history"
+                >
+                  All Bets
+                </Link>
+                <Link
                   onClick={() => {
                     setExpanded(false);
                     animHamMenu();
@@ -198,11 +197,10 @@ const Header = () => {
                       ? "active text-decoration-none main-nav__item"
                       : "text-white text-decoration-none main-nav__item"
                   }
-                  to="/my-bets-history">
-                    My Bets
-                  </Link>
-                  
-
+                  to="/my-bets-history"
+                >
+                  My Bets
+                </Link>
               </NavDropdown>
               <Link
                 onClick={() => {
