@@ -12,8 +12,32 @@ const Header = () => {
 
   const [modal, setModal] = useState(false);
   const [description, setDescription] = useState("");
+  const [address, setAddress] = useState("");
 
   const [expanded, setExpanded] = useState(false);
+
+  if (window.ethereum) {
+    window.ethereum.sendAsync(
+      {
+        method: "eth_accounts",
+        params: [],
+        jsonrpc: "2.0",
+        id: new Date().getTime(),
+      },
+      function (error, info) {
+        if (info["result"] != "") {
+          let startingAddress = info["result"][0].substring(0, 5);
+          let endingAddress = info["result"][0].substr(
+            info["result"][0].length - 3
+          );
+
+          let shortenedAddress = `${startingAddress}...${endingAddress}`;
+
+          setAddress(shortenedAddress);
+        }
+      }
+    );
+  }
 
   function connectToWallet() {
     if (window.ethereum) {
@@ -23,19 +47,32 @@ const Header = () => {
           accountChangedHandler(result[0]);
           localStorage.setItem("address", result[0]);
 
-          let startingAddress = localStorage.getItem("address").substring(0, 5);
-          let endingAddress = localStorage
-            .getItem("address")
-            .substr(localStorage.getItem("address").length - 3);
-
-          let shortenedAddress = `${startingAddress}...${endingAddress}`;
-
           window.ethereum.request({ method: "eth_chainId" }).then((data) => {
-            console.log(data);
             localStorage.setItem("chainID", data);
           });
 
-          localStorage.setItem("shortenedAddress", shortenedAddress);
+          window.ethereum.sendAsync(
+            {
+              method: "eth_accounts",
+              params: [],
+              jsonrpc: "2.0",
+              id: new Date().getTime(),
+            },
+            function (error, info) {
+              console.log(info);
+
+              if (info["result"] != "") {
+                let startingAddress = info["result"][0].substring(0, 5);
+                let endingAddress = info["result"][0].substr(
+                  info["result"][0].length - 3
+                );
+
+                let shortenedAddress = `${startingAddress}...${endingAddress}`;
+
+                setAddress(shortenedAddress);
+              }
+            }
+          );
         });
     } else {
       setModal(true);
@@ -46,14 +83,28 @@ const Header = () => {
   function accountChangedHandler(newAccount) {
     localStorage.setItem("address", newAccount);
 
-    let startingAddress = localStorage.getItem("address").substring(0, 5);
-    let endingAddress = localStorage
-      .getItem("address")
-      .substr(localStorage.getItem("address").length - 3);
+    if (window.ethereum) {
+      window.ethereum.sendAsync(
+        {
+          method: "eth_accounts",
+          params: [],
+          jsonrpc: "2.0",
+          id: new Date().getTime(),
+        },
+        function (error, info) {
+          if (info["result"] != "") {
+            let startingAddress = info["result"][0].substring(0, 5);
+            let endingAddress = info["result"][0].substr(
+              info["result"][0].length - 3
+            );
 
-    let shortenedAddress = `${startingAddress}...${endingAddress}`;
+            let shortenedAddress = `${startingAddress}...${endingAddress}`;
 
-    localStorage.setItem("shortenedAddress", shortenedAddress);
+            setAddress(shortenedAddress);
+          }
+        }
+      );
+    }
   }
 
   function chainChangedHandler() {
@@ -221,9 +272,7 @@ const Header = () => {
             <Nav className="main-nav__connect">
               {localStorage.getItem("address") && (
                 <div className="ml-3 d-flex flex-column main-nav__item">
-                  <button className="btn btn-secondary">
-                    {localStorage.getItem("shortenedAddress")}
-                  </button>
+                  <button className="btn btn-secondary">{address}</button>
                 </div>
               )}
               {!localStorage.getItem("address") && (

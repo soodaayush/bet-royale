@@ -37,7 +37,7 @@
     "sass": "^1.50.0",
     "simple-get": "^4.0.1",
     "web-vitals": "^1.1.2",
-    "web3": "^1.7.2"
+    "web3": "^1.7.3"
   },
   "scripts": {
     "start": "react-scripts start",
