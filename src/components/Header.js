@@ -25,16 +25,14 @@ const Header = () => {
         id: new Date().getTime(),
       },
       function (error, info) {
-        if (info["result"] != "") {
-          let startingAddress = info["result"][0].substring(0, 5);
-          let endingAddress = info["result"][0].substr(
-            info["result"][0].length - 3
-          );
+        let startingAddress = info["result"][0].substring(0, 5);
+        let endingAddress = info["result"][0].substr(
+          info["result"][0].length - 3
+        );
 
-          let shortenedAddress = `${startingAddress}...${endingAddress}`;
+        let shortenedAddress = `${startingAddress}...${endingAddress}`;
 
-          setAddress(shortenedAddress);
-        }
+        setAddress(shortenedAddress);
       }
     );
   }
@@ -61,16 +59,14 @@ const Header = () => {
             function (error, info) {
               console.log(info);
 
-              if (info["result"] != "") {
-                let startingAddress = info["result"][0].substring(0, 5);
-                let endingAddress = info["result"][0].substr(
-                  info["result"][0].length - 3
-                );
+              let startingAddress = info["result"][0].substring(0, 5);
+              let endingAddress = info["result"][0].substr(
+                info["result"][0].length - 3
+              );
 
-                let shortenedAddress = `${startingAddress}...${endingAddress}`;
+              let shortenedAddress = `${startingAddress}...${endingAddress}`;
 
-                setAddress(shortenedAddress);
-              }
+              setAddress(shortenedAddress);
             }
           );
         });
@@ -92,16 +88,14 @@ const Header = () => {
           id: new Date().getTime(),
         },
         function (error, info) {
-          if (info["result"] != "") {
-            let startingAddress = info["result"][0].substring(0, 5);
-            let endingAddress = info["result"][0].substr(
-              info["result"][0].length - 3
-            );
+          let startingAddress = info["result"][0].substring(0, 5);
+          let endingAddress = info["result"][0].substr(
+            info["result"][0].length - 3
+          );
 
-            let shortenedAddress = `${startingAddress}...${endingAddress}`;
+          let shortenedAddress = `${startingAddress}...${endingAddress}`;
 
-            setAddress(shortenedAddress);
-          }
+          setAddress(shortenedAddress);
         }
       );
     }
