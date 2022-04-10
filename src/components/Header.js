@@ -264,12 +264,12 @@ const Header = () => {
               </Link>
             </Nav>
             <Nav className="main-nav__connect">
-              {localStorage.getItem("address") && (
+              {address !== "" && (
                 <div className="ml-3 d-flex flex-column main-nav__item">
                   <button className="btn btn-secondary">{address}</button>
                 </div>
               )}
-              {!localStorage.getItem("address") && (
+              {address === "" && (
                 <div className="main-nav__item">
                   <button
                     onClick={connectToWallet}
