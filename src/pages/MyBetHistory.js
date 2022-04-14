@@ -51,7 +51,7 @@ const MyBetHistory = () => {
         setActiveBets(
           currentBetLogs.filter(
             (bet) =>
-              localStorage.getItem("username") === bet.betCreator &&
+              localStorage.getItem("address") === bet.betCreator &&
               moment.utc(bet.results).local().format("YYYY/MM/DD h:mm A") >
                 currentTime
           )
@@ -86,7 +86,7 @@ const MyBetHistory = () => {
         <div className="bet-history__desc bet-history__bg">
           <p>
             The below bets are either completed or active bets related to your
-            Discord User.
+            wallet.
           </p>
           {/* <QuestionCircle size={90}/> */}
         </div>

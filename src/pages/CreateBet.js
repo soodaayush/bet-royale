@@ -41,16 +41,16 @@ const CreateBet = () => {
     const currentDescription = convertedText;
     const currentShortDescription = shortDescriptionInputRef.current.value;
 
-    if (!localStorage.getItem("username")) {
+    if (!localStorage.getItem("address")) {
       setModal(true);
-      setDescription("Please sign in with your Discord account!");
+      setDescription("Please sign in to your Metamask wallet!");
       return;
     }
 
     let today = +new Date();
 
-    let formattedDeadline = parseInt(moment(currentDeadline).format("x"));
-    let formattedResults = parseInt(moment(currentResults).format("x"));
+    let formattedDeadline = parseInt(moment.utc(currentDeadline).format("x"));
+    let formattedResults = parseInt(moment.utc(currentResults).format("x"));
 
     if (
       currentChoices === "" ||
@@ -120,7 +120,8 @@ const CreateBet = () => {
       currentBets: 0,
       maxBetters: currentMaxBetters,
       participants: "none",
-      betCreator: localStorage.getItem("username"),
+      betCreator: localStorage.getItem("shortenedAddress"),
+      betCreatorAddress: localStorage.getItem("address"),
     };
 
     BetService.getInstance()
@@ -223,7 +224,8 @@ const CreateBet = () => {
               <p>
                 The deadline of the bet defines the deadline for entering the
                 bet. Once this pre-defined time is reached, no bet submissions
-                are possible anymore.
+                are possible anymore. Remember, the time you set will be in UTC
+                time for everyone, including you.
               </p>
               <input
                 type="datetime-local"
@@ -242,7 +244,8 @@ const CreateBet = () => {
               <p>
                 Set a specific time to when the results of the bet are
                 disclosed. At this point of time, a bet is meant to be fully
-                done.
+                done. Remember, the time you set will be in UTC time for
+                everyone, including you.
               </p>
               <input
                 type="datetime-local"

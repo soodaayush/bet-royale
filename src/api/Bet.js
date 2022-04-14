@@ -53,7 +53,7 @@ export class BetService extends Component {
   }
 
   async getBetHistory() {
-    let username = GetHash(localStorage.getItem("username"));
+    let username = GetHash(localStorage.getItem("address"));
 
     try {
       let response = await fetch(
@@ -69,7 +69,7 @@ export class BetService extends Component {
   }
 
   async logBet(data) {
-    let username = GetHash(localStorage.getItem("username"));
+    let username = GetHash(localStorage.getItem("address"));
 
     let url = `https://bet-royale-bd57d-default-rtdb.firebaseio.com/user/${username}/betHistory.json`;
 

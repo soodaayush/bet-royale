@@ -70,12 +70,6 @@ function Bet(props) {
       return;
     }
 
-    if (!localStorage.getItem("username")) {
-      setAlertModal(true);
-      setDescription("Please connect your Discord account!");
-      return;
-    }
-
     if (
       localStorage.getItem("chainID") !== "0x63564c40" &&
       localStorage.getItem("chainID") !== "0x63564c41" &&

@@ -5,7 +5,6 @@ import { Modal, Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
 import { HouseFill, NodePlusFill, Book } from "react-bootstrap-icons";
 
 import logo from "../images/logo.svg";
-import discord from "../images/discord.svg";
 
 const Header = () => {
   const location = useLocation();
@@ -31,6 +30,8 @@ const Header = () => {
         );
 
         let shortenedAddress = `${startingAddress}...${endingAddress}`;
+
+        localStorage.setItem("shortenedAddress", shortenedAddress);
 
         setAddress(shortenedAddress);
       }
@@ -66,6 +67,8 @@ const Header = () => {
 
               let shortenedAddress = `${startingAddress}...${endingAddress}`;
 
+              localStorage.setItem("shortenedAddress", shortenedAddress);
+
               setAddress(shortenedAddress);
             }
           );
@@ -94,6 +97,8 @@ const Header = () => {
           );
 
           let shortenedAddress = `${startingAddress}...${endingAddress}`;
+
+          localStorage.setItem("shortenedAddress", shortenedAddress);
 
           setAddress(shortenedAddress);
         }
@@ -278,31 +283,6 @@ const Header = () => {
                     Connect to a Wallet
                   </button>
                 </div>
-              )}
-              {localStorage.getItem("username") && (
-                <div className="main-nav__item">
-                  <button className="btn btn-primary">
-                    {localStorage.getItem("username")}
-                  </button>
-                </div>
-              )}
-              {!localStorage.getItem("username") && (
-                <a
-                  className="text-decoration-none btn btn-success main-nav__item"
-                  target="_blank"
-                  rel="noreferrer"
-                  id="login"
-                  href={
-                    "https://discord.com/oauth2/authorize?client_id=903764073966096425&redirect_uri=https%3A%2F%2Fbet-royale.netlify.app%2F&response_type=token&scope=identify"
-                  }
-                >
-                  Discord
-                  <img
-                    className="ml-3 d-inline img-fluid discord"
-                    src={discord}
-                    alt="discord"
-                  />
-                </a>
               )}
             </Nav>
           </Navbar.Collapse>

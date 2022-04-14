@@ -8,7 +8,7 @@ Bet Royale is an open source project where we build a website for betting your R
 
 ## What Do You Need To Do Everything On This Website?
 
-You need a Metamask wallet and a Discord account, that's all you need. You need both your Metamask wallet and Discord account in order to bet. In order to create bets, you just need your Discord account.
+You need a Metamask wallet, that's all you need.
 
 ## The Home Page
 

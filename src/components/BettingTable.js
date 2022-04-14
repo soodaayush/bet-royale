@@ -158,12 +158,6 @@ const BettingTable = (props) => {
       return;
     }
 
-    if (!localStorage.getItem("username")) {
-      setAlertModal(true);
-      setDescription("Please connect your Discord account!");
-      return;
-    }
-
     if (localStorage.getItem("chainID") !== "0x63564c40") {
       setAlertModal(true);
       setDescription("Please connect to the Harmony Mainnet Shard 0!");
@@ -192,9 +186,9 @@ const BettingTable = (props) => {
   }
 
   function openBetResultsModal(bet) {
-    if (!localStorage.getItem("username")) {
+    if (!localStorage.getItem("address")) {
       setAlertModal(true);
-      setDescription("Please login with Discord!");
+      setDescription("Please login into your Metamask wallet!");
       return;
     }
 
