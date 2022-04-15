@@ -1,42 +1,79 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Modal, Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
+import { GetHash } from "../utils/Common";
 
 import { HouseFill, NodePlusFill, Book } from "react-bootstrap-icons";
+
+import BetService from "../api/Bet";
 
 import logo from "../images/logo.svg";
 
 const Header = () => {
   const location = useLocation();
 
+  let profanityFilter = require("leo-profanity");
+
   const [modal, setModal] = useState(false);
+  const [usernameModal, setUsernameModal] = useState(false);
+  const [addressModal, setAddressModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState(false);
+  const [inputMessage, setInputMessage] = useState("");
   const [description, setDescription] = useState("");
-  const [address, setAddress] = useState("");
+  const [displayAddress, setDisplayAddress] = useState("");
+  const [fullAddress, setFullAddress] = useState("");
+  const [username, setUsername] = useState("");
 
   const [expanded, setExpanded] = useState(false);
 
-  if (window.ethereum) {
-    window.ethereum.sendAsync(
-      {
-        method: "eth_accounts",
-        params: [],
-        jsonrpc: "2.0",
-        id: new Date().getTime(),
-      },
-      function (error, info) {
-        let startingAddress = info["result"][0].substring(0, 5);
-        let endingAddress = info["result"][0].substr(
-          info["result"][0].length - 3
-        );
+  const usernameInputRef = useRef();
 
-        let shortenedAddress = `${startingAddress}...${endingAddress}`;
+  useEffect(() => {
+    let encryptedAddress = GetHash(localStorage.getItem("address"));
 
-        localStorage.setItem("shortenedAddress", shortenedAddress);
+    console.log(encryptedAddress);
 
-        setAddress(shortenedAddress);
+    BetService.getInstance()
+      .getUsername(encryptedAddress)
+      .then((data) => {
+        let userName = "";
+
+        for (const key in data) {
+          userName = data[key].username;
+          break;
+        }
+
+        setUsername(userName);
+      });
+  }, []);
+
+  window.ethereum.sendAsync(
+    {
+      method: "eth_accounts",
+      params: [],
+      jsonrpc: "2.0",
+      id: new Date().getTime(),
+    },
+    function (error, info) {
+      let startingAddress = info["result"][0].substring(0, 5);
+      let endingAddress = info["result"][0].substr(
+        info["result"][0].length - 3
+      );
+
+      localStorage.setItem("address", info["result"][0]);
+
+      let shortenedAddress = `${startingAddress}...${endingAddress}`;
+
+      localStorage.setItem("shortenedAddress", shortenedAddress);
+
+      setDisplayAddress(shortenedAddress);
+      setFullAddress(info["result"][0]);
+
+      if (!username) {
+        setUsername(shortenedAddress);
       }
-    );
-  }
+    }
+  );
 
   function connectToWallet() {
     if (window.ethereum) {
@@ -50,6 +87,21 @@ const Header = () => {
             localStorage.setItem("chainID", data);
           });
 
+          let encryptedAddress = GetHash(localStorage.getItem("address"));
+
+          BetService.getInstance()
+            .getUsername(encryptedAddress)
+            .then((data) => {
+              let userName = "";
+
+              for (const key in data) {
+                userName = data[key].username;
+                break;
+              }
+
+              setUsername(userName);
+            });
+
           window.ethereum.sendAsync(
             {
               method: "eth_accounts",
@@ -58,18 +110,23 @@ const Header = () => {
               id: new Date().getTime(),
             },
             function (error, info) {
-              console.log(info);
-
               let startingAddress = info["result"][0].substring(0, 5);
               let endingAddress = info["result"][0].substr(
                 info["result"][0].length - 3
               );
 
+              localStorage.setItem("address", info["result"][0]);
+
               let shortenedAddress = `${startingAddress}...${endingAddress}`;
 
               localStorage.setItem("shortenedAddress", shortenedAddress);
 
-              setAddress(shortenedAddress);
+              setDisplayAddress(shortenedAddress);
+              setFullAddress(info["result"][0]);
+
+              if (!username) {
+                setUsername(shortenedAddress);
+              }
             }
           );
         });
@@ -82,28 +139,48 @@ const Header = () => {
   function accountChangedHandler(newAccount) {
     localStorage.setItem("address", newAccount);
 
-    if (window.ethereum) {
-      window.ethereum.sendAsync(
-        {
-          method: "eth_accounts",
-          params: [],
-          jsonrpc: "2.0",
-          id: new Date().getTime(),
-        },
-        function (error, info) {
-          let startingAddress = info["result"][0].substring(0, 5);
-          let endingAddress = info["result"][0].substr(
-            info["result"][0].length - 3
-          );
+    let encryptedAddress = GetHash(localStorage.getItem("address"));
 
-          let shortenedAddress = `${startingAddress}...${endingAddress}`;
+    BetService.getInstance()
+      .getUsername(encryptedAddress)
+      .then((data) => {
+        let userName = "";
 
-          localStorage.setItem("shortenedAddress", shortenedAddress);
-
-          setAddress(shortenedAddress);
+        for (const key in data) {
+          userName = data[key].username;
+          break;
         }
-      );
-    }
+
+        setUsername(userName);
+      });
+
+    window.ethereum.sendAsync(
+      {
+        method: "eth_accounts",
+        params: [],
+        jsonrpc: "2.0",
+        id: new Date().getTime(),
+      },
+      function (error, info) {
+        let startingAddress = info["result"][0].substring(0, 5);
+        let endingAddress = info["result"][0].substr(
+          info["result"][0].length - 3
+        );
+
+        localStorage.setItem("address", info["result"][0]);
+
+        let shortenedAddress = `${startingAddress}...${endingAddress}`;
+
+        localStorage.setItem("shortenedAddress", shortenedAddress);
+
+        setDisplayAddress(shortenedAddress);
+        setFullAddress(info["result"][0]);
+
+        if (!username) {
+          setUsername(shortenedAddress);
+        }
+      }
+    );
   }
 
   function chainChangedHandler() {
@@ -125,6 +202,62 @@ const Header = () => {
     document.querySelector("#hamburger").classList.toggle("open");
   }
 
+  function openUsernameModal() {
+    setUsernameModal(true);
+  }
+
+  function closeUsernameModal() {
+    setUsernameModal(false);
+
+    setInputMessage("");
+
+    setSuccessMessage(false);
+  }
+
+  function validateUsername() {
+    let usernameInput = usernameInputRef.current.value;
+
+    if (usernameInput === "") {
+      setInputMessage("There is nothing here!");
+      return;
+    }
+
+    for (let i = 0; i < profanityFilter.list().length; i++) {
+      if (usernameInput.toLowerCase() === profanityFilter.list()[i]) {
+        setInputMessage("One or more of the fields contain profanity!");
+        return;
+      }
+    }
+
+    if (usernameInput.length < 3 || usernameInput.length > 15) {
+      setInputMessage("Your username doesn't meet the requirements below!");
+      return;
+    }
+
+    setInputMessage("");
+
+    let profile = {
+      username: usernameInputRef.current.value,
+    };
+
+    BetService.getInstance().changeUsername(
+      profile,
+      localStorage.getItem("address")
+    );
+
+    setSuccessMessage(true);
+
+    setUsername(usernameInputRef.current.value);
+  }
+
+  function showAddressModal() {
+    setAddressModal(true);
+  }
+
+  function closeAddressModal() {
+    setAddressModal(false);
+  }
+
   return (
     <div className="header-wrapper w-100">
       <Modal show={modal}>
@@ -142,15 +275,64 @@ const Header = () => {
           <div className="modal-body">
             <p>{description}</p>
           </div>
-          <div className="modal-footer">
+          <div className="modal-footer"></div>
+        </div>
+      </Modal>
+      <Modal show={usernameModal}>
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title">Set Username</h5>
             <button
               type="button"
-              className="btn btn-danger"
-              onClick={closeModal}
-            >
-              Close
-            </button>
+              className="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              onClick={closeUsernameModal}
+            ></button>
           </div>
+          <div className="modal-body">
+            <div className="w-100">
+              <div>
+                <span className="text-danger">{inputMessage}</span>
+                <input
+                  type="text"
+                  className="form-control mt-2 w-100"
+                  placeholder="New Username"
+                  ref={usernameInputRef}
+                  required
+                />
+              </div>
+            </div>
+            {successMessage && (
+              <p className="text-success mt-2">Username set!</p>
+            )}
+            <button
+              type="button w-100"
+              onClick={validateUsername}
+              className="btn btn-success mt-3"
+            >
+              Set Username
+            </button>
+            <p className="mt-4">New username must be 3 - 15 characters long.</p>
+          </div>
+        </div>
+      </Modal>
+      <Modal show={addressModal}>
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title">Wallet Address</h5>
+            <button
+              type="button"
+              className="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              onClick={closeAddressModal}
+            ></button>
+          </div>
+          <div className="modal-body">
+            <p>Wallet Address: {fullAddress}</p>
+          </div>
+          <div className="modal-footer"></div>
         </div>
       </Modal>
       <Navbar
@@ -269,12 +451,37 @@ const Header = () => {
               </Link>
             </Nav>
             <Nav className="main-nav__connect">
-              {address !== "" && (
+              {displayAddress && !username && (
                 <div className="ml-3 d-flex flex-column main-nav__item">
-                  <button className="btn btn-secondary">{address}</button>
+                  <button
+                    className="btn btn-secondary"
+                    onClick={showAddressModal}
+                  >
+                    {displayAddress}
+                  </button>
                 </div>
               )}
-              {address === "" && (
+              {username && (
+                <div className="ml-3 d-flex flex-column main-nav__item">
+                  <button
+                    className="btn btn-secondary"
+                    onClick={showAddressModal}
+                  >
+                    {username}
+                  </button>
+                </div>
+              )}
+              {displayAddress !== "" && (
+                <div className="main-nav__item">
+                  <button
+                    className="btn btn-success ml-3"
+                    onClick={openUsernameModal}
+                  >
+                    Change Username
+                  </button>
+                </div>
+              )}
+              {displayAddress === "" && (
                 <div className="main-nav__item">
                   <button
                     onClick={connectToWallet}

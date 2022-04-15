@@ -1,7 +1,8 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { Modal, FloatingLabel, Form, FormGroup } from "react-bootstrap";
 import { motion } from "framer-motion";
+import { GetHash } from "../utils/Common";
 import "leo-profanity";
 import BetService from "../api/Bet";
 
@@ -18,6 +19,10 @@ const CreateBet = () => {
   const [description, setDescription] = useState("");
   const [convertedText, setConvertedText] = useState("");
 
+  const [username, setUsername] = useState("");
+  const [displayAddress, setDisplayAddress] = useState("");
+  const [fullAddress, setFullAddress] = useState("");
+
   const betChoicesInputRef = useRef();
   const deadlineInputRef = useRef();
   const resultsInputRef = useRef();
@@ -28,6 +33,53 @@ const CreateBet = () => {
   const shortDescriptionInputRef = useRef();
 
   const history = useHistory();
+
+  useEffect(() => {
+    let encryptedAddress = GetHash(localStorage.getItem("address"));
+
+    console.log(encryptedAddress);
+
+    BetService.getInstance()
+      .getUsername(encryptedAddress)
+      .then((data) => {
+        let userName = "";
+
+        for (const key in data) {
+          userName = data[key].username;
+          break;
+        }
+
+        setUsername(userName);
+      });
+  }, []);
+
+  window.ethereum.sendAsync(
+    {
+      method: "eth_accounts",
+      params: [],
+      jsonrpc: "2.0",
+      id: new Date().getTime(),
+    },
+    function (error, info) {
+      let startingAddress = info["result"][0].substring(0, 5);
+      let endingAddress = info["result"][0].substr(
+        info["result"][0].length - 3
+      );
+
+      localStorage.setItem("address", info["result"][0]);
+
+      let shortenedAddress = `${startingAddress}...${endingAddress}`;
+
+      localStorage.setItem("shortenedAddress", shortenedAddress);
+
+      setDisplayAddress(shortenedAddress);
+      setFullAddress(info["result"][0]);
+
+      if (!username) {
+        setUsername(shortenedAddress);
+      }
+    }
+  );
 
   function createBet(e) {
     e.preventDefault();
@@ -120,8 +172,8 @@ const CreateBet = () => {
       currentBets: 0,
       maxBetters: currentMaxBetters,
       participants: "none",
-      betCreator: localStorage.getItem("shortenedAddress"),
-      betCreatorAddress: localStorage.getItem("address"),
+      betCreator: username ? username : displayAddress,
+      betCreatorAddress: fullAddress,
     };
 
     BetService.getInstance()

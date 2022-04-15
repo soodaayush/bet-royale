@@ -22,6 +22,7 @@ const BettingTable = (props) => {
   const [betState, setBetState] = useState([]);
   const [betData, setBetData] = useState();
   const [allBets, setAllBets] = useState([]);
+  const [address, setAddress] = useState("");
 
   const [alertModal, setAlertModal] = useState(false);
   const [descriptionModal, setDescriptionModal] = useState(false);
@@ -37,6 +38,31 @@ const BettingTable = (props) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const web3 = new Web3(Web3.givenProvider);
+
+  if (window.ethereum) {
+    window.ethereum.sendAsync(
+      {
+        method: "eth_accounts",
+        params: [],
+        jsonrpc: "2.0",
+        id: new Date().getTime(),
+      },
+      function (error, info) {
+        let startingAddress = info["result"][0].substring(0, 5);
+        let endingAddress = info["result"][0].substr(
+          info["result"][0].length - 3
+        );
+
+        setAddress(info["result"][0]);
+
+        console.log(info["result"][0]);
+
+        let shortenedAddress = `${startingAddress}...${endingAddress}`;
+
+        localStorage.setItem("shortenedAddress", shortenedAddress);
+      }
+    );
+  }
 
   useEffect(() => {
     const currentBets = props.data;
@@ -359,7 +385,7 @@ const BettingTable = (props) => {
                       Results coming soon
                     </button>
                   )}
-                {localStorage.getItem("username") === "WarBaddy#8953" &&
+                {address === "0x2ade6e328953a132911e0ad197e68be882865241" &&
                   moment.utc(currentBet.results).format("x") < +new Date() &&
                   !currentBet.selectedChoice && (
                     <button
